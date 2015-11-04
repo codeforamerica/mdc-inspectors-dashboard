@@ -1,0 +1,275 @@
+<!DOCTYPE html>
+<html class='no-js lt-ie9' lang='en'>
+	<!-- paulirish.com/2008/conditional-stylesheets-vs-css-hacks-answer-neither/ -->
+	<!--[if lt IE 7]> <html class="no-js lt-ie9 lt-ie8 lt-ie7" lang="en"> <![endif]-->
+	<!--[if IE 7]>    <html class="no-js lt-ie9 lt-ie8" lang="en"> <![endif]-->
+	<!--[if IE 8]>    <html class="no-js lt-ie9" lang="en"> <![endif]-->
+	<!--[if gt IE 8]><!--> <html class="no-js" lang="en"> <!--<![endif]-->
+
+<head>
+  <meta charset="utf-8">
+
+  <title>{% block page_title %}
+    Feedback
+    {% endblock %}</title>
+  <meta name="description" content="{% block meta_description %}{% endblock %}">
+  <meta name="author" content="{% block meta_author %}{% endblock %}">
+
+  <!-- Needed to not break persona. https://developer.mozilla.org/en-US/Persona/Quick_Setup -->
+  <meta http-equiv="X-UA-Compatible" content="IE=Edge">
+
+  <!-- Mobile viewport optimized: h5bp.com/viewport -->
+  <meta name="viewport" content="width=device-width">
+  <link rel="icon" href="/static/favicon.ico" type="image/x-icon" />
+  <link href='//fonts.googleapis.com/css?family=Raleway:400,600,300' rel='stylesheet' type='text/css'>
+
+	<!-- leaflet mapping -->
+	<link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/leaflet/0.7.3/leaflet.css" />
+	<script src="//cdnjs.cloudflare.com/ajax/libs/leaflet/0.7.3/leaflet.js"></script>
+
+  {% block assets %}
+    {% assets "css_all" %}
+  <link rel="stylesheet" href="{{ ASSET_URL }}">
+    {% endassets %}
+  {% endblock %}
+</head>
+
+<body class="{% block body_class %}{% endblock %}">
+{% block body %}
+{% with form=form  %}
+{% include "nav.html" %}
+{% endwith %}
+
+<!-- nav active states -->
+<!-- begin stuff that requires authentication check -->
+
+  {% set navigation_bar = [
+    ('/users/manage', 'Manage Users and Survey Lead E-mails')
+  ] -%}
+      
+ <!-- {% if active_page == 'Dashboard' %}
+
+      {% set navigation_bar = [
+        ('/users/manage', 'Manage Users'),
+        ('/surveys', 'Set Survey Lead E-mails')
+      ] -%}
+
+    {% else %}
+
+      {% set navigation_bar = [
+        ('/', 'Dashboard')
+      ] -%}
+
+		{% endif %} -->
+
+		{% if current_user and current_user.is_authenticated() and current_user.role.name == 'admin' %}
+		
+		 {% set navigation_bar = [
+      ('/users/manage', 'Manage Users & E-mail')
+    ] -%}
+
+		<div class='row u-pull-left' id='breadcrumb'>
+
+			<ul class='list-nav'>
+				<li class='breadcrumb-text'>You're looking at:</li>
+				<li id='breadcrumb-location' class='bold'>{{ title }}</li>
+			</ul>
+
+		</div>
+
+		<div class='row u-pull-right' id='breadcrumb-nav-parent'>
+
+			<ul>
+
+				<li class='breadcrumb-text'>Go back to:</li>
+
+				{% for href, id in navigation_bar %}
+				<li class='breadcrumb-nav'><a href='{{ href|e}}'>{{id|e}}</a></li>
+				{% endfor %}
+
+			</ul>
+
+		</div>
+
+		{% endif %}
+
+<!-- end stuff that requires authentication check -->
+
+<div id='container' class="remodal-bg {% block content_class %}container-fluid{% endblock content_class %}">
+
+{% with messages = get_flashed_messages(with_categories=true) %}
+  {% if messages %}
+  <div class="row">
+    <div class="col-md-12">
+      {% for category, message in messages %}
+      <div class="alert alert-{{ category }}">
+        <a class="close" title="Close" href="#" data-dismiss="alert">&times;</a>
+       {{message}}
+      </div><!-- end .alert -->
+      {% endfor %}
+    </div><!-- end col-md -->
+  </div><!-- end row -->
+  {% endif %}
+{% endwith %}
+
+{% block content %}{% endblock %}
+
+</div><!-- end container -->
+
+{% include "footer.html" %}
+
+
+</body>
+
+<!-- FIXME: move jquery into a bower and use grunt -->
+<script src="//ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
+<script src="//ajax.googleapis.com/ajax/libs/jqueryui/1.11.4/jquery-ui.min.js"></script>
+<script src="/static/js/modernizr-custom.js"></script>
+<script src="/static/js/app.js"></script>
+
+<!-- JS blocking -->
+
+	{% if active_page == 'Dashboard' %}
+
+		<script type="text/javascript" src="/static/js/remodal.min.js"></script>
+		<script type="text/javascript" src="/static/js/chart.min.js"></script>
+		<script type="text/javascript" src="/static/js/jquery.raty.js"></script>
+		<script type="text/javascript" src="/static/js/Chart.HorizontalBar.js"></script>
+		<script type="text/javascript" src="/static/js/jqcloud.min.js"></script>
+		<script type="text/javascript" src="/static/js/jquery.tipsy.js"></script>
+		<script type="text/javascript" src="/static/js/tabletop.js"></script>
+		<script type="text/javascript" src="/static/js/dashboard.js"></script>
+		<script type="text/javascript" src="/static/js/leaflet-heat.js"></script>
+
+	{% elif active_page == 'Violations' %}
+
+		<script type="text/javascript" src="/static/js/chart.min.js"></script>
+		<script type="text/javascript" src="/static/js/Chart.HorizontalBar.js"></script>
+		<script type="text/javascript" src="/static/js/violations-data.js"></script>
+
+
+	{% elif active_page == 'Manage Users' %}
+
+		<script type="text/javascript" src="/static/js/remodal.min.js"></script>
+		<script type="text/javascript" src="/static/js/manage-users.js"></script>
+
+  {% elif active_page == 'Details' %}
+
+    <script type="text/javascript" src="/static/js/survey-details.js"></script>
+    <script type="text/javascript" src="/static/js/jquery.stickytableheaders.min.js"></script>
+    <script type="text/javascript" src="/static/js/sorttable.js"></script>
+
+
+	{% endif %}
+
+<!-- JS blocking -->
+
+
+{% block js %}
+  {% assets "js_all" %}
+      <script type="text/javascript" src="{{ ASSET_URL }}"></script>
+  {% endassets %}
+{% endblock %}
+
+{% if json_obj %}
+<script type="application/json" id="jsondata">
+{{ json_obj.daily_graph|safe }}
+</script>
+<script type="application/json" id="surveydata">
+{{ json_obj.surveys_type|safe }}
+</script>
+<script type="application/json" id="permitstype">
+{{ json_obj.permits_type|safe }}
+</script>
+<script type="application/json" id="surveyrole">
+{{ json_obj.survey_role|safe }}
+</script>
+<script type="application/json" id="surveycomplete">
+{{ json_obj.survey_complete|safe }}
+</script>
+<script type="application/json" id="surveypurpose">
+{{ json_obj.survey_purpose|safe }}
+</script>
+<script type="application/json" id="permits_rawjson">
+{{ json_obj.permits_rawjson|safe }}
+</script>
+<script type="application/json" id="violations_rawjson">
+{{ json_obj.violations_rawjson|safe }}
+</script>
+<script type="application/json" id="violations_locations_json">
+{{ json_obj.violations_locations_json|safe }}
+</script>
+<script type="application/json" id="violations_type_json">
+{{ json_obj.violations_type_json|safe }}
+</script>
+<script type="application/json" id="violations_per_month_json">
+{{ json_obj.violations_per_month_json|safe }}
+</script>
+{% endif %}
+<script src="https://login.persona.org/include.js"></script>
+<script type='text/javascript'>
+{% if current_user.is_anonymous() or not current_user %}
+var currentUser = null;
+{% else %}
+var currentUser = {{current_user.email|tojson|safe}};
+{% endif %}
+
+navigator.id.watch({
+  loggedInUser: currentUser,
+  onlogin: function(assertion) {
+    // A user has logged in! Here you need to:
+    // 1. Send the assertion to your backend for verification and to create a session.
+    // 2. Update your UI.
+    $.ajax({ /* <-- This example uses jQuery, but you can use whatever you'd like */
+      type: 'POST',
+      url: '{{ url_for("public.auth", next=thispage()) }}', // This is a URL on your website.
+      data: {assertion: assertion},
+      success: function(res, status, xhr) {
+        window.location.href = res.split('thispage')[0];
+      },
+      error: function(xhr, status, err) {
+        alert("Login failure: " + err);
+        navigator.id.logout();
+      }
+    });
+  },
+  onlogout: function() {
+    // A user has logged out! Here you need to:
+    // Tear down the user's session by redirecting the user or making a call to your backend.
+    // Also, make sure loggedInUser will get set to null on the next page load.
+    // (That's a literal JavaScript null. Not false, 0, or undefined. null.)
+    $.ajax({
+      type: 'POST',
+      url: '{{ url_for("public.logout") }}', // This is a URL on your website.
+      success: function(res, status, xhr) {
+        window.location.href = '{{ url_for("public.logout") }}';
+      },
+      error: function(xhr, status, err) { alert("Logout failure: " + err); }
+    });
+  }
+});
+var signinLink = $('.js-signin');
+if (signinLink) {
+  signinLink.on('click', function() {
+    navigator.id.request();
+  });
+}
+var signoutLink = $('.js-signout');
+if (signoutLink) {
+  signoutLink.on('click', function() {
+    navigator.id.logout();
+  });
+}
+
+  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+  (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+  m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+  })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+  ga('create', 'UA-20825280-30', 'auto');
+  ga('send', 'pageview');
+
+</script>
+<!-- end scripts -->
+{% endblock %}
+</html>
