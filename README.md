@@ -29,10 +29,6 @@ If you're not used to it see [VIM Adventures](http://vim-adventures.com/), becau
 * Use the following commands to bootstrap your development environment:
 (kudos go to [Team Pittsburgh](https://github.com/codeforamerica/pittsburgh-purchasing-suite))
 
-* After installing Compass, run `compass watch` inside your Compass directory, so that Compass will automatically compile your .scss files into .css.
-
-* This repo uses Google Sheets as an information source for the 'what is this' UI on the dashboard. Tabletop.js is included in the repo, but you still need to publish your Sheet to web and replace the URL found in `dashboard.js` to enable this functionality.
-
 ```
 # clone the repo
 git clone https://github.com/codeforamerica/mdc-feedback.git
@@ -59,11 +55,6 @@ CREATE USER user PASSWORD 'password';
 CREATE DATABASE feedback_dev OWNER=user;
 _Feel free to replace user and password with values of your choice._
 ```
-* Upgrade your database in the virtual environment
-
-```
-python manage.py db upgrade
-```
 
 * Inside your virtual environment, open up the `postactivate` file:
 
@@ -81,6 +72,12 @@ export DATABASE_URL="postgresql://localhost/feedback_dev"
 
 * Reboot your virtual environment. (I use `workon mdc-feedback`, but your mileage will vary)
 
+* Upgrade your database in the virtual environment
+
+```
+python manage.py db upgrade
+```
+
 * Start the server
 
 ```
@@ -91,6 +88,10 @@ python manage.py server
 ```
 http://localhost:9000
 ```
+
+* After installing Compass, run `compass watch` inside your Compass directory, so that Compass will automatically compile your .scss files into .css.
+
+* This repo uses Google Sheets as an information source for the 'what is this' UI on the dashboard. Tabletop.js is included in the repo, but you still need to publish your Sheet to web and replace the URL found in `dashboard.js` to enable this functionality.
 
 ### Deployment
 

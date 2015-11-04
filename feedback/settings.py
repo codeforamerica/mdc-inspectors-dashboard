@@ -45,7 +45,7 @@ class StagingConfig(Config):
 class DevelopmentConfig(Config):
     ENV = 'dev'
     DEVELOPMENT = True
-    SQLALCHEMY_DATABASE_URI = os_env.get('DATABASE_URL', 'postgresql://localhost/feedback_dev')
+    SQLALCHEMY_DATABASE_URI = os_env.get('DATABASE_URL', 'postgresql://localhost/inspectors_dev')
     DEBUG = True
     DEBUG_TB_ENABLED = True
     ASSETS_DEBUG = True  # Don't bundle/minify static assets
