@@ -26,6 +26,21 @@ class Config(object):
     MAIL_USE_TLS = True
     TF_ID = os_env.get('TF_ID')
     TF_KEY = os_env.get('TF_KEY')
+    LANG_EN = os_env.get('LANG_EN')
+    ROLE_EN = os_env.get('ROLE_EN')
+    ROLE_ES = os_env.get('ROLE_ES')
+    OPINION_EN = os_env.get('OPINION_EN')
+    OPINION_ES = os_env.get('OPINION_ES')
+    GETDONE_EN = os_env.get('GETDONE_EN')
+    GETDONE_ES = os_env.get('GETDONE_ES')
+    COMMENTS_EN = os_env.get('COMMENTS_EN')
+    COMMENTS_ES = os_env.get('COMMENTS_ES')
+    TYPE_EN = os_env.get('TYPE_EN')
+    TYPE_ES = os_env.get('TYPE_ES')
+    FOLLOWUP_EN = os_env.get('FOLLOWUP_EN')
+    FOLLOWUP_ES = os_env.get('FOLLOWUP_ES')
+    CONTACT_EN = os_env.get('CONTACT_EN')
+    CONTACT_ES = os_env.get('CONTACT_ES')
 
 
 class ProductionConfig(Config):

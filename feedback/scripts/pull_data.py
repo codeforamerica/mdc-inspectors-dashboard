@@ -14,7 +14,7 @@ from feedback.surveys.serializers import (
 )
 
 from feedback.surveys.constants import (
-    TF, SURVEY_DAYS, ROLES
+    SURVEY_DAYS, ROLES
 )
 from feedback.dashboard.vendorsurveys import (
     fill_values
@@ -54,11 +54,16 @@ def etl_web_data(ts):
     data = []
     json = call_web(ts)
 
+    def tf(str):
+        print current_app.config
+        print current_app.config.get(str)
+        return current_app.config.get(str)
+
     for resp in json['responses']:
         answers_arr = resp['answers']
 
         obj = {'method': 'web'}
-        if "English" in answers_arr[TF['LANG_EN']]:
+        if "English" in answers_arr[tf('LANG_EN')]:
             obj['lang'] = 'en'
         else:
             obj['lang'] = 'es'
@@ -68,18 +73,18 @@ def etl_web_data(ts):
         temp = resp['metadata']['date_submit']
         obj['date_submitted'] = date_to_db(temp)
 
-        obj['get_done'] = fill_values(answers_arr, TF['GETDONE_EN'], TF['GETDONE_ES'])
-        obj['rating'] = int(fill_values(answers_arr, TF['OPINION_EN'], TF['OPINION_ES']))
+        obj['get_done'] = fill_values(answers_arr, tf('GETDONE_EN'), tf('GETDONE_ES'))
+        obj['rating'] = int(fill_values(answers_arr, tf('OPINION_EN'), tf('OPINION_ES')))
 
-        obj['follow_up'] = fill_values(answers_arr, TF['FOLLOWUP_EN'], TF['FOLLOWUP_ES'])
-        obj['permit_type'] = fill_values(answers_arr, TF['TYPE_EN'], TF['TYPE_ES'])
-        obj['contact'] = fill_values(answers_arr, TF['CONTACT_EN'], TF['CONTACT_ES'])
-        obj['more_comments'] = fill_values(answers_arr, TF['COMMENTS_EN'], TF['COMMENTS_ES'])
+        obj['follow_up'] = fill_values(answers_arr, tf('FOLLOWUP_EN'), tf('FOLLOWUP_ES'))
+        obj['permit_type'] = fill_values(answers_arr, tf('TYPE_EN'), tf('TYPE_ES'))
+        obj['contact'] = fill_values(answers_arr, tf('CONTACT_EN'), tf('CONTACT_ES'))
+        obj['more_comments'] = fill_values(answers_arr, tf('COMMENTS_EN'), tf('COMMENTS_ES'))
         obj['role'] = ROLES[
             fill_values(
                 answers_arr,
-                TF['ROLE_EN'],
-                TF['ROLE_ES'])]
+                tf('ROLE_EN'),
+                tf('ROLE_ES'))]
 
         data.append(obj)
     # print data
