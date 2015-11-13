@@ -1,3 +1,0 @@
-export ADMIN_EMAIL='sdengo@codeforamerica.org'
-export CONFIG='inspectors.settings.DevelopmentConfig'
-export DATABASE_URL='postgresql://localhost/inspectors_dev'
