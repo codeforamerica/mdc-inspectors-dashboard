@@ -46,7 +46,7 @@ class Config(object):
 class ProductionConfig(Config):
     ENV = 'prod'
     DEBUG = False
-    BROWSERID_URL = os_env.get('BROWSERID_URL', 'http://mdc-feedback.herokuapp.com/')
+    BROWSERID_URL = os_env.get('BROWSERID_URL', 'https://mdc-feedback.herokuapp.com/')
 
 
 class StagingConfig(Config):

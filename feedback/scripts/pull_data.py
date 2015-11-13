@@ -99,16 +99,15 @@ def follow_up(models):
 
     Returns ..?
     '''
-    subj = 'Miami-Dade County Permit Inspection Center Survey'
+    subj = 'Miami-Dade County Inspectors Survey'
     from_email = 'mdcfeedbackdev@gmail.com'
     for survey in models:
 
         if survey.follow_up:
-            stakeholder = Stakeholder.query.get(survey.route)
+            stakeholder = Stakeholder.query.first()
             if stakeholder is None or stakeholder.email_list is None:
                 current_app.logger.info(
-                    'NOSTAKEHOLDER | Route: {}\nSurvey Submitted Date: {}\nSubject: {}'.format(
-                        survey.route_en,
+                    'NOSTAKEHOLDER | \nSurvey Submitted Date: {}\nSubject: {}'.format(
                         survey.date_submitted,
                         subj
                     )
