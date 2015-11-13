@@ -14,20 +14,12 @@ from feedback.surveys.serializers import (
 )
 
 from feedback.surveys.constants import (
-    TF, ROUTES, SURVEY_DAYS, BEST,
-    WORST, ROLES, PURPOSE
+    TF, SURVEY_DAYS, ROLES
 )
 from feedback.dashboard.vendorsurveys import (
-    fill_values,
-    string_to_bool
+    fill_values
 )
 from feedback.utils import send_email
-
-
-TI_API = 'https://textit.in/api/v1/runs.json?flow_uuid='
-TEXTIT_UUID_EN = '0aa9f77b-d775-4bc9-952a-1a6636258841'
-TEXTIT_UUID_ES = 'bdb57073-ab32-4c1b-a3a5-25f866b9626b'
-TEXTIT_AUTH_KEY = '41a75bc6977c1e0b2b56d53a91a356c7bf47e3e9'
 
 
 def date_to_db(str1):
@@ -45,28 +37,11 @@ def call_web(ts):
     as an argument, then pulls Return the
     result in json.
     '''
-    API = TF['API'] + TF['KEY'] + '&completed=true&since=' + str(ts.timestamp)
+    API = 'https://api.typeform.com/v0/form/' + current_app.config.get('TF_ID') + '?key=' + current_app.config.get('TF_KEY') + '&completed=true&since=' + str(ts.timestamp)
+    print API
     response = requests.get(API)
 
     return response.json()
-
-
-def call_sms(ts):
-    ''' Call the SMS API, which in this case is
-    TextIt. Accepts an timestamp (Arrow object)
-    as an argument, then pulls Return the
-    result in json.
-    '''
-    ts = ts.strftime("%Y-%m-%dT%H:%M:%S.000")
-    SMS_API = TI_API + TEXTIT_UUID_ES + ',' + TEXTIT_UUID_EN + '&after=' + ts
-    # print 'TEXTIT API', SMS_API
-
-    resp = requests.get(
-        SMS_API,
-        headers={'Authorization': 'Token ' + TEXTIT_AUTH_KEY}
-        )
-
-    return resp.json()
 
 
 def etl_web_data(ts):
@@ -95,13 +70,9 @@ def etl_web_data(ts):
 
         obj['get_done'] = fill_values(answers_arr, TF['GETDONE_EN'], TF['GETDONE_ES'])
         obj['rating'] = int(fill_values(answers_arr, TF['OPINION_EN'], TF['OPINION_ES']))
-        obj['improvement'] = fill_values(answers_arr, TF['IMPROVE_EN'], TF['IMPROVE_ES'])
-        obj['best_other'] = fill_values(answers_arr, TF['BEST_OTHER_EN'], TF['BEST_OTHER_ES'])
-        obj['worst_other'] = fill_values(
-            answers_arr,
-            TF['WORST_OTHER_EN'],
-            TF['WORST_OTHER_ES'])
+
         obj['follow_up'] = fill_values(answers_arr, TF['FOLLOWUP_EN'], TF['FOLLOWUP_ES'])
+        obj['permit_type'] = fill_values(answers_arr, TF['TYPE_EN'], TF['TYPE_ES'])
         obj['contact'] = fill_values(answers_arr, TF['CONTACT_EN'], TF['CONTACT_ES'])
         obj['more_comments'] = fill_values(answers_arr, TF['COMMENTS_EN'], TF['COMMENTS_ES'])
         obj['role'] = ROLES[
@@ -109,122 +80,9 @@ def etl_web_data(ts):
                 answers_arr,
                 TF['ROLE_EN'],
                 TF['ROLE_ES'])]
-        try:
-            obj['purpose'] = PURPOSE[
-                fill_values(
-                    answers_arr,
-                    TF['PURP_EN'],
-                    TF['PURP_ES'])]
-        except KeyError:
-            # None. Set to 6 which is "OTHER"
-            obj['purpose'] = 6
-
-        obj['purpose_other'] = fill_values(
-            answers_arr,
-            TF['PURP_OTHER_EN'],
-            TF['PURP_OTHER_ES'])
-
-        try:
-            obj['best'] = BEST[
-                fill_values(
-                    answers_arr,
-                    TF['BEST_EN'],
-                    TF['BEST_ES'])]
-        except KeyError:
-            obj['best'] = None
-
-        try:
-            obj['worst'] = WORST[
-                fill_values(
-                    answers_arr,
-                    TF['WORST_EN'],
-                    TF['WORST_ES'])]
-        except KeyError:
-            obj['worst'] = None
-
-        try:
-            obj['route'] = ROUTES[
-                fill_values(
-                    answers_arr,
-                    TF['ROUTE_EN'],
-                    TF['ROUTE_ES'])]
-        except KeyError:
-            obj['route'] = None
 
         data.append(obj)
     # print data
-    return data
-
-
-def etl_sms_data(ts):
-    ''' Take the Textit API and ETL it to a common
-    standard we can do dashboard stats for. Accepts
-    a time stamp (Arrow object)
-
-    Returns a list of objects, each object being
-    a survey.
-    '''
-    data = []
-
-    json_result = call_sms(ts)
-    # print 'json_result', json_result
-    obj_completed = [result for result in json_result['results'] if result['completed']]
-    # obj_completed = [result for result in json_result['results']]
-    for obj in obj_completed:
-
-        iter = {}
-        values_array = obj['values']
-        for value in values_array:
-            iter[value['label']] = {
-                'category': value['category'],
-                'value': value['rule_value'],
-                'text': value['text']
-            }
-
-        s_obj = {
-            'source_id': 'SMS-' + str(obj['run']),
-            'method': 'sms',
-            'route': iter['Section']['text'],
-            'get_done': string_to_bool(iter['Tasks']['text']),
-            'rating': iter['Satisfaction']['text'],
-            'improvement': iter['Improvement']['text'],
-            'follow_up': string_to_bool(iter['Followup Permission']['text']),
-            'more_comments': iter['Comments']['text']
-        }
-
-        if iter['Best']['text'].isdigit():
-            s_obj['best'] = iter['Best']['text']
-        else:
-            s_obj['best_other'] = iter['Best']['text']
-
-        if iter['Worst']['text'].isdigit():
-            s_obj['worst'] = iter['Worst']['text']
-        else:
-            s_obj['worst_other'] = iter['Worst']['text']
-
-        s_obj['date_submitted'] = date_to_db(obj['modified_on'])
-
-        if obj['flow_uuid'] == TEXTIT_UUID_EN:
-            s_obj['lang'] = 'en'
-        else:
-            s_obj['lang'] = 'es'
-
-        try:
-            s_obj['purpose'] = iter['Purpose']['value']
-        except KeyError:
-            s_obj['purpose'] = None
-
-        try:
-            s_obj['role'] = iter['Role']['text']
-        except KeyError:
-            s_obj['role'] = None
-
-        try:
-            s_obj['contact'] = iter['Contact Information']['text']
-        except KeyError:
-            s_obj['contact'] = None
-
-        data.append(s_obj)
     return data
 
 
@@ -240,7 +98,7 @@ def follow_up(models):
     from_email = 'mdcfeedbackdev@gmail.com'
     for survey in models:
 
-        if survey.follow_up and survey.route is not None:
+        if survey.follow_up:
             stakeholder = Stakeholder.query.get(survey.route)
             if stakeholder is None or stakeholder.email_list is None:
                 current_app.logger.info(
@@ -270,8 +128,7 @@ def load_data():
     timestamp = timestamp.replace(days=-SURVEY_DAYS)
 
     tf = etl_web_data(timestamp)
-    ti = etl_sms_data(timestamp)
-    data = tf + ti
+    data = tf
 
     loader = DataLoader(pic_schema)
 

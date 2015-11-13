@@ -24,6 +24,8 @@ class Config(object):
     MAIL_PORT = 587
     MAIL_USE_SSL = False
     MAIL_USE_TLS = True
+    TF_ID = os_env.get('TF_ID')
+    TF_KEY = os_env.get('TF_KEY')
 
 
 class ProductionConfig(Config):
@@ -62,5 +64,5 @@ class DevelopmentConfig(Config):
 class TestingConfig(Config):
     ADMIN_EMAIL = 'foo@foo.com'
     TESTING = True
-    SQLALCHEMY_DATABASE_URI = os_env.get('TEST_DATABASE_URL', 'postgresql://localhost/feedback_test')
+    SQLALCHEMY_DATABASE_URI = os_env.get('TEST_DATABASE_URL', 'postgresql://localhost/inspectors_test')
     MAIL_SUPPRESS_SEND = True

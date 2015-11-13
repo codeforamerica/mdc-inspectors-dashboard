@@ -13,8 +13,6 @@ from feedback.settings import (
     DevelopmentConfig, ProductionConfig,
     StagingConfig, TestingConfig
 )
-from feedback.surveys.constants import ROUTES
-
 
 app = create_app()
 HERE = os.path.abspath(os.path.dirname(__file__))

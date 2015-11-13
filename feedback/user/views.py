@@ -19,7 +19,6 @@ from feedback.user.models import User
 from feedback.user.forms import UserForm
 from feedback.decorators import requires_roles
 
-from feedback.surveys.constants import ROUTES
 from feedback.surveys.models import Stakeholder
 
 blueprint = Blueprint(

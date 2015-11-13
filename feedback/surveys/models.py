@@ -3,8 +3,7 @@ from feedback.database import (
     Column, db, Model
 )
 from feedback.surveys.constants import (
-    ROLES, PURPOSE, ROUTES,
-    BEST, WORST
+    ROLES
 )
 
 
@@ -38,19 +37,13 @@ class Survey(Model):
     method = Column(db.String(3), nullable=False)
     date_submitted = Column(db.DateTime, nullable=False, index=True)
     role = Column(db.Integer, nullable=False)
-    purpose = Column(db.Integer, nullable=False)
-    purpose_other = Column(db.String(500), nullable=True)
-    route = Column(db.Integer, nullable=True)
     rating = Column(db.Integer, nullable=False)
     get_done = Column(db.Boolean(), default=False)
-    best = Column(db.Integer, nullable=True)
-    best_other = Column(db.String(500), nullable=True)
-    worst = Column(db.Integer, nullable=True)
-    worst_other = Column(db.String(500), nullable=True)
-    improvement = Column(db.String(500), nullable=True)
-    follow_up = Column(db.Boolean(), default=False)
     contact = Column(db.String(500), nullable=True)
     more_comments = Column(db.String(2000), nullable=True)
+    follow_up = Column(db.Boolean(), default=False)
+    permit_type = Column(db.String(50), nullable=False)
+    know_to_pass = Column(db.Boolean(), default=False)
 
     @property
     def role_en(self):
@@ -58,34 +51,6 @@ class Survey(Model):
             return ROLES[self.role]
         except KeyError:
             return self.route
-
-    @property
-    def route_en(self):
-        try:
-            return ROUTES[self.route]
-        except KeyError:
-            return self.route
-
-    @property
-    def best_en(self):
-        return get_en(
-            self.best,
-            self.best_other,
-            BEST)
-
-    @property
-    def worst_en(self):
-        return get_en(
-            self.worst,
-            self.worst_other,
-            WORST)
-
-    @property
-    def purpose_en(self):
-        return get_en(
-            self.purpose,
-            self.purpose_other,
-            PURPOSE)
 
     def __repr__(self):
         return '<Survey(id:{0} tracking:{1})>'.format(self.id, self.source_id)

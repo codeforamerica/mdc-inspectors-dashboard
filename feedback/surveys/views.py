@@ -17,7 +17,6 @@ from sqlalchemy import desc
 from feedback.database import db
 from feedback.decorators import requires_roles
 
-from feedback.surveys.constants import ROUTES
 from feedback.surveys.models import Stakeholder, Survey
 
 
