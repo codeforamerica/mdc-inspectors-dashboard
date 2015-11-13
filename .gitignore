@@ -4,10 +4,4 @@
 .webassets-cache
 .sass-cache
 
-# Flask-assets output
-common.css
-ie.css
-print.css
-screen.css
-
 .env
