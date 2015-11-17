@@ -10,9 +10,12 @@ db.init:
 	python manage.py db upgrade
 	python manage.py seed_roles
 
-db.empty:
+db.reset:
 	dropdb inspectors_dev
 	createdb inspectors_dev
+	make db.setup
+
+db.setup:
 	python manage.py db upgrade
 	python manage.py seed_roles
 	make load_surveys

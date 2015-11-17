@@ -10,7 +10,7 @@ today = datetime.date.today()
 from flask import (
     Blueprint, render_template,
     flash, request, redirect, url_for,
-    make_response
+    make_response, json
 )
 
 from sqlalchemy import desc
@@ -93,13 +93,10 @@ def to_csv():
         'date_submitted',
         'method',
         'language',
-        'route',
         'rating',
         'role',
         'get_done',
         'purpose',
-        'best',
-        'worst',
         'improvement',
         'follow_up',
         'contact',
@@ -111,13 +108,10 @@ def to_csv():
             survey_model.date_submitted,
             survey_model.method,
             survey_model.lang,
-            survey_model.route_en,
             survey_model.rating,
             survey_model.role_en,
             survey_model.get_done,
             survey_model.purpose_en,
-            survey_model.best_en,
-            survey_model.worst_en,
             survey_model.improvement,
             survey_model.follow_up,
             survey_model.contact,
@@ -131,3 +125,26 @@ def to_csv():
     output.headers["Content-Disposition"] = "attachment; filename=export.csv"
     output.headers["Content-type"] = "text/csv"
     return output
+
+
+@blueprint.route("/webhook", methods=['GET', 'POST'])
+def webhook():
+    ''' How to test this on localhost, since I had to do some digging:
+    1. Run the server locally in one tab (python manage.py server)
+    2. In another tab try:
+       curl -H "Content-Type: application/json" -X POST -d typeform-request.json http://127.0.0.1:9000/surveys/webhook
+    TIP: Resty may help: https://github.com/micha/resty. Once you do that you can do the following:
+    Tab 1: resty http://127.0.0.1:9000 -H "Content-Type: application/json"
+    Tab 2: POST /surveys/webhook < typeform-request.json
+    '''
+    if request.method == 'POST':
+        try:
+            payload = json.loads(request.data)
+            print ("HTTP/1.1 200 OK")
+            print (payload)
+            return 'OK'
+        except:
+            pass
+    else:
+        # Probably raise an error of some sort or redirect
+        print ('GETS HERE FWIW')
