@@ -283,77 +283,9 @@ $(document).ready(function () {
     }
   ],
 
-  cctxPieChart = new Chart(cctx).Pie(cctxPie),
+  cctxPieChart = new Chart(cctx).Pie(cctxPie);
   // end successful task completion
 
-  // surveys by purpose
-  sptx = $("#s-purpose-chart").get(0).getContext("2d"),
-  sptxdata = JSON.parse($("#surveypurpose")[0].childNodes[0].data),
-
-  //this only works because it's a known quantity.
-  violation = {label:'Find out about a violation/lien', count:0},
-  inspector = {label:'Meet with an inspector', count:0},
-  permit = {label:'Apply for a permit', count:0},
-  reviewer = {label:'Meet with a plan reviewer', count:0},
-  cu = {label:'Obtain a certificate of use/occupancy', count:0},
-  other = {label:'Other', count:0},
-  sorter2 = [violation, inspector, permit, reviewer, cu, other],
-
-  sptxseries = [],
-  sptxlabels = [],
-  surveysByPurpose,
-  surveysByPurposeChart;
-
-  var test = 0;
-
-  for(i = 0; i < sptxdata.data.length; i+=1) {
-
-    switch(parseInt(sptxdata.data[i][0], 10)) {
-
-      case 1:
-        permit.count += sptxdata.data[i][1];
-        break;
-      case 2:
-        inspector.count += sptxdata.data[i][1];
-        break;
-      case 3:
-        reviewer.count += sptxdata.data[i][1];
-        break;
-      case 4:
-        violation.count += sptxdata.data[i][1];
-        break;
-      case 5:
-        cu.count += sptxdata.data[i][1];
-        break;
-      case 6:
-        other.count += sptxdata.data[i][1];
-      default:
-        other.count += 1;
-
-    }
-
-  }
-
-  for(i = 0; i < sorter2.length; i+=1) {
-    sptxseries[i] = sorter2[i].count;
-    sptxlabels[i] = sorter2[i].label;
-  }
-
-  surveysByPurpose = {
-    labels: sptxlabels,
-    datasets: [
-      {
-        label: "Respondents by Purpose",
-        fillColor: t_purple_1,
-        strokeColor: purple_1,
-        data: sptxseries
-      }
-    ]
-  };
-
-  surveysByPurposeChart = new Chart(sptx).HorizontalBar(surveysByPurpose);
-  // end surveys by purpose
-  
   // Get context with jQuery - using jQuery's .get() method.
   var ctx = $("#myChart").get(0).getContext("2d"),
       jsondata = JSON.parse($("#jsondata")[0].childNodes[0].data),
@@ -414,7 +346,7 @@ $(document).ready(function () {
       $('#surveyChart').parent().parent().find('.headline').html(surveyData.title);
       myPieChart = new Chart(pctx).Pie(pieData);
 
-  
+
   function buildViolationsCharts() {
 
     for(i = 0; i < violationsJSON.length; i++) {
@@ -498,7 +430,7 @@ $(document).ready(function () {
     return date;
   }
 
-  
+
   Array.prototype.sortOn = function(){
     var dup = this.slice();
     if(!arguments.length) return dup.sort();
@@ -538,56 +470,6 @@ $(document).ready(function () {
     $('#s-lang-rate-es').raty({
       score: function() {
         return $('#rate-en').text();
-        },
-        path: 'static/images',
-        half: true,
-        readOnly:true,
-        number:7
-    });
-
-    $('#s-purpose-rate-permit').raty({
-      score: function() {
-        return $('#rate-permit').text();
-        },
-        path: 'static/images',
-        half: true,
-        readOnly:true,
-        number:7
-    });
-
-    $('#s-purpose-rate-inspect').raty({
-      score: function() {
-        return $('#rate-inspect').text();
-        },
-        path: 'static/images',
-        half: true,
-        readOnly:true,
-        number:7
-    });
-
-    $('#s-purpose-rate-review').raty({
-      score: function() {
-        return $('#rate-review').text();
-        },
-        path: 'static/images',
-        half: true,
-        readOnly:true,
-        number:7
-    });
-
-    $('#s-purpose-rate-liens').raty({
-      score: function() {
-        return $('#rate-liens').text();
-        },
-        path: 'static/images',
-        half: true,
-        readOnly:true,
-        number:7
-    });
-
-    $('#s-purpose-rate-cu').raty({
-      score: function() {
-        return $('#rate-cu').text();
         },
         path: 'static/images',
         half: true,

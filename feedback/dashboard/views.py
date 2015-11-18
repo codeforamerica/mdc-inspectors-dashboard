@@ -12,9 +12,9 @@ from flask import (
 
 from feedback.dashboard.vendorsurveys import (
     get_rating_scale, get_surveys_by_role,
-    get_surveys_by_completion, get_surveys_by_purpose,
+    get_surveys_by_completion,
     get_all_survey_responses, get_rating_by_lang,
-    get_rating_by_purpose, get_rating_by_role
+    get_rating_by_role
 )
 
 from feedback.surveys.constants import SURVEY_DAYS
@@ -189,7 +189,6 @@ def home():
     json_obj['permits_type'] = json.dumps(dashboard_collection[9])
     json_obj['survey_role'] = json.dumps(dashboard_collection[10])
     json_obj['survey_complete'] = json.dumps(dashboard_collection[12])
-    json_obj['survey_purpose'] = json.dumps(dashboard_collection[13])
     json_obj['permits_rawjson'] = json.dumps(dump_socrata_api('p'))
     json_obj['violations_rawjson'] = json.dumps(dump_socrata_api('v'))
     json_obj['violations_locations_json'] = json.dumps(dump_socrata_api('vl'))
