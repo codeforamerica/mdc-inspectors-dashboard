@@ -24,12 +24,29 @@ class Config(object):
     MAIL_PORT = 587
     MAIL_USE_SSL = False
     MAIL_USE_TLS = True
+    TF_ID = os_env.get('TF_ID')
+    TF_KEY = os_env.get('TF_KEY')
+    LANG_EN = os_env.get('LANG_EN')
+    ROLE_EN = os_env.get('ROLE_EN')
+    ROLE_ES = os_env.get('ROLE_ES')
+    OPINION_EN = os_env.get('OPINION_EN')
+    OPINION_ES = os_env.get('OPINION_ES')
+    GETDONE_EN = os_env.get('GETDONE_EN')
+    GETDONE_ES = os_env.get('GETDONE_ES')
+    COMMENTS_EN = os_env.get('COMMENTS_EN')
+    COMMENTS_ES = os_env.get('COMMENTS_ES')
+    TYPE_EN = os_env.get('TYPE_EN')
+    TYPE_ES = os_env.get('TYPE_ES')
+    FOLLOWUP_EN = os_env.get('FOLLOWUP_EN')
+    FOLLOWUP_ES = os_env.get('FOLLOWUP_ES')
+    CONTACT_EN = os_env.get('CONTACT_EN')
+    CONTACT_ES = os_env.get('CONTACT_ES')
 
 
 class ProductionConfig(Config):
     ENV = 'prod'
     DEBUG = False
-    BROWSERID_URL = os_env.get('BROWSERID_URL', 'http://mdc-feedback.herokuapp.com/')
+    BROWSERID_URL = os_env.get('BROWSERID_URL', 'https://mdc-feedback.herokuapp.com/')
 
 
 class StagingConfig(Config):
@@ -62,5 +79,5 @@ class DevelopmentConfig(Config):
 class TestingConfig(Config):
     ADMIN_EMAIL = 'foo@foo.com'
     TESTING = True
-    SQLALCHEMY_DATABASE_URI = os_env.get('TEST_DATABASE_URL', 'postgresql://localhost/feedback_test')
+    SQLALCHEMY_DATABASE_URI = os_env.get('TEST_DATABASE_URL', 'postgresql://localhost/inspectors_test')
     MAIL_SUPPRESS_SEND = True

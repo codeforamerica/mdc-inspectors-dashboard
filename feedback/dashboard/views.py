@@ -163,18 +163,18 @@ def home():
         },
         {
             "title": "Purpose",
-            "data": get_surveys_by_purpose(survey_table)
+            "data": 0
         },
         {
             "title": "Ratings",
             "data": {
                 "en": get_rating_by_lang(survey_table, 'en'),
                 "es": get_rating_by_lang(survey_table, 'es'),
-                "p1": get_rating_by_purpose(survey_table, 1),
-                "p2": get_rating_by_purpose(survey_table, 2),
-                "p3": get_rating_by_purpose(survey_table, 3),
-                "p4": get_rating_by_purpose(survey_table, 4),
-                "p5": get_rating_by_purpose(survey_table, 5),
+                "p1": 0,
+                "p2": 0,
+                "p3": 0,
+                "p4": 0,
+                "p5": 0,
                 "contractor": get_rating_by_role(survey_table, 1),
                 "architect": get_rating_by_role(survey_table, 2),
                 "permitconsultant": get_rating_by_role(survey_table, 3),

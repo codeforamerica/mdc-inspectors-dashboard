@@ -1,7 +1,7 @@
 db.rebuild:
 	rm -rf migrations
-	dropdb feedback_dev
-	createdb feedback_dev
+	dropdb inspectors_dev
+	createdb inspectors_dev
 	make db.init
 
 db.init:
@@ -10,9 +10,12 @@ db.init:
 	python manage.py db upgrade
 	python manage.py seed_roles
 
-db.empty:
-	dropdb feedback_dev
-	createdb feedback_dev
+db.reset:
+	dropdb inspectors_dev
+	createdb inspectors_dev
+	make db.setup
+
+db.setup:
 	python manage.py db upgrade
 	python manage.py seed_roles
 	make load_surveys
