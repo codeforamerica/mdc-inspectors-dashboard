@@ -45,7 +45,7 @@ def is_valid_email_list(value):
 def process_stakeholders_form(form):
     errors = False
 
-    for i in range(1, len(PERMIT_TYPE)):
+    for i in range(1, 8):
         label = PERMIT_TYPE[i]
         key = 'field-route-' + str(i)
         value = request.form[key]
