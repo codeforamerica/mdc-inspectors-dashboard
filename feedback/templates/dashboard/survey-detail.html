@@ -21,7 +21,7 @@
           </p>
 
           <p>
-             <span class='bold'>Rating: </span><span class='inline'>{{ item.rating }}</span><span class='bold'>Source: </span><span class='inline'>{{ 'Text' if item.method=='sms' else 'Web' }}</span><span class='bold'>Language: </span><span class='inline'>{{ 'English' if item.method=='en' else 'Spanish' }}</span><span class='bold'>Section: </span><span class='inline'>{{ item.route_en }}</span>
+             <span class='bold'>Rating: </span><span class='inline'>{{ item.rating }}</span><span class='bold'>Source: </span><span class='inline'>{{ 'Text' if item.method=='sms' else 'Web' }}</span><span class='bold'>Language: </span><span class='inline'>{{ 'English' if item.method=='en' else 'Spanish' }}</span><span class='bold'>Permit Type: </span><span class='inline'>{{ item.permit_type }}</span>
           </p>
 
 
@@ -32,19 +32,9 @@
 
           <p class='alert-message'><span class='bold'>Contact information: </span>{{ item.contact }}</p>
 
-          <p><span class='bold'>Purpose in visiting the PIC:</span> {{ item.purpose_en }}</p>
-          <p><span class='bold'>Respondent succeeded?</span> {{ 'Yes' if item.get_done else 'No' }}</p>
+          <p><span class='bold'>Respondent knows what to do to pass next time?</span> {{ 'Yes' if item.know_to_pass else 'No' }}</p>
 
           <p class='alert-message'>The following responses are open-ended commentary.</p>
-
-          <p class='bold'>When asked for best experience, this person responded with:</p>
-          <p>{{ item.best_en }}</p>
-
-          <p class='bold'>When asked for best experience, this person responded with:</p>
-          <p>{{ item.worst_en }}</p>
-
-          <p class='bold'>When asked for suggestions for improvement, this person responded with:</p>
-          <p>{{ item.improvement }}</p>
 
           <p class='bold'>When asked for general comments, this person responded with:</p>
           <p>{{ item.more_comments }}</p>

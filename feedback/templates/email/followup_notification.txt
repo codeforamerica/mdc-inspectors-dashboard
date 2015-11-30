@@ -1,7 +1,4 @@
-[SURVEY_NAME] #ie. Miami-Dade County Permit Inspection Center Survey
-
-
-[FIRST_NAME] [LAST_NAME],
+Hello!
 
 A user has submitted a survey feedback response that requires attention from the {{ survey.route_en }} division of the Permit Inspection Center. Below are the details of the survey; please follow-up with the user within [SLA] days if contact information is provided.
 

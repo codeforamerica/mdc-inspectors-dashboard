@@ -34,11 +34,11 @@ class Monthly(Model):
         task every month through Heroku. In theory.
         '''
         if self.email_list is None:
-            subj = 'Permitting Inspection Center Monthly Status Report'
+            subj = 'Inspection Interations Monthly Status Report'
             current_app.logger.info(
                 'NO-EMAIL-ADDRESS | Subject: {}'.format(subj))
         else:
-            subj = 'Permitting Inspection Center Monthly Status Report - {}'
+            subj = 'Inspection Interations Monthly Status Report - {}'
             from_email = current_app.config.get('ADMIN_EMAIL')
 
             last_month = arrow.utcnow().replace(months=-1)
