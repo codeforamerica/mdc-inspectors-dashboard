@@ -378,6 +378,15 @@ a.what-is-this {
 #stakeholderForm ul li {
   display: list-item;
 }
+/* line 465, ../sass/screen.scss */
+#stakeholderForm ul li input {
+  width: 100%;
+}
+
+/* line 473, ../sass/screen.scss */
+#monthlyForm input#monthly-report-email {
+  width: 100%;
+}
 
 /* SURVEY BUILDER */
 /* line 435, ../sass/screen.scss */
