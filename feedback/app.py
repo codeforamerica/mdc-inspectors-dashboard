@@ -1,7 +1,11 @@
 # -*- coding: utf-8 -*-
-"""The app module, containing the app factory function."""
+""" The app module, containing the app factory function."""
 
+""" Next three lines specifically switches from the default ASCII to UTF-8 (for Spanish) """
 import sys
+reload(sys)
+sys.setdefaultencoding("utf-8")
+
 import logging
 import os
 
