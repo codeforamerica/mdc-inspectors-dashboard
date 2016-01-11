@@ -33,8 +33,6 @@ def to_csv():
         'rating',
         'role',
         'get_done',
-        'purpose',
-        'improvement',
         'follow_up',
         'contact',
         'more_comments'])
@@ -48,8 +46,6 @@ def to_csv():
             survey_model.rating,
             survey_model.role_en,
             survey_model.get_done,
-            survey_model.purpose_en,
-            survey_model.improvement,
             survey_model.follow_up,
             survey_model.contact,
             survey_model.more_comments])
