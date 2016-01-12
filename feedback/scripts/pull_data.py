@@ -14,7 +14,7 @@ from feedback.surveys.serializers import (
 )
 
 from feedback.surveys.constants import (
-    SURVEY_DAYS, ROLES
+    SURVEY_DAYS, ROLES, PERMIT_TYPE
 )
 from feedback.dashboard.vendorsurveys import (
     fill_values
@@ -77,7 +77,6 @@ def etl_web_data(ts):
         obj['rating'] = int(fill_values(answers_arr, tf('OPINION_EN'), tf('OPINION_ES')))
 
         obj['follow_up'] = fill_values(answers_arr, tf('FOLLOWUP_EN'), tf('FOLLOWUP_ES'))
-        obj['permit_type'] = fill_values(answers_arr, tf('TYPE_EN'), tf('TYPE_ES'))
         obj['contact'] = fill_values(answers_arr, tf('CONTACT_EN'), tf('CONTACT_ES'))
         obj['more_comments'] = fill_values(answers_arr, tf('COMMENTS_EN'), tf('COMMENTS_ES'))
         obj['role'] = ROLES[
@@ -85,6 +84,15 @@ def etl_web_data(ts):
                 answers_arr,
                 tf('ROLE_EN'),
                 tf('ROLE_ES'))]
+
+        try:
+            obj['permit_type'] = PERMIT_TYPE[
+                fill_values(
+                    answers_arr,
+                    tf('TYPE_EN'),
+                    tf('TYPE_ES'))]
+        except KeyError:
+            obj['permit_type'] = None
 
         data.append(obj)
     # print data
@@ -103,11 +111,12 @@ def follow_up(models):
     from_email = 'mdcfeedbackdev@gmail.com'
     for survey in models:
 
-        if survey.follow_up:
-            stakeholder = Stakeholder.query.first()
+        if survey.follow_up and survey.permit_type is not None:
+            stakeholder = Stakeholder.query.get(survey.permit_type)
             if stakeholder is None or stakeholder.email_list is None:
                 current_app.logger.info(
-                    'NOSTAKEHOLDER | \nSurvey Submitted Date: {}\nSubject: {}'.format(
+                    'NOSTAKEHOLDER | Type: {}\nSurvey Submitted Date: {}\nSubject: {}'.format(
+                        survey.permit_type_en,
                         survey.date_submitted,
                         subj
                     )

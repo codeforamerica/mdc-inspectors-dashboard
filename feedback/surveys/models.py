@@ -3,7 +3,7 @@ from feedback.database import (
     Column, db, Model
 )
 from feedback.surveys.constants import (
-    ROLES
+    ROLES, PERMIT_TYPE
 )
 
 
@@ -42,15 +42,22 @@ class Survey(Model):
     contact = Column(db.String(500), nullable=True)
     more_comments = Column(db.String(2000), nullable=True)
     follow_up = Column(db.Boolean(), default=False)
-    permit_type = Column(db.String(50), nullable=False)
+    permit_type = Column(db.Integer, nullable=True)
     know_to_pass = Column(db.Boolean(), default=False)
+
+    @property
+    def permit_type_en(self):
+        try:
+            return PERMIT_TYPE[self.permit_type]
+        except KeyError:
+            return self.permit_type
 
     @property
     def role_en(self):
         try:
             return ROLES[self.role]
         except KeyError:
-            return self.route
+            return self.role
 
     def __repr__(self):
         return '<Survey(id:{0} tracking:{1})>'.format(self.id, self.source_id)
