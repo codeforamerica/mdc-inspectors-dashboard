@@ -9,7 +9,6 @@ from feedback.surveys.models import Survey
 
 from marshmallow import fields
 from sqlalchemy import inspect
-from pprint import pprint
 
 
 class DataLoader:

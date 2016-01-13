@@ -55,8 +55,6 @@ def etl_web_data(ts):
     json = call_web(ts)
 
     def tf(str):
-        print current_app.config
-        print current_app.config.get(str)
         return current_app.config.get(str)
 
     for resp in json['responses']:
