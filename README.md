@@ -69,12 +69,6 @@ export CONFIG="feedback.settings.DevelopmentConfig"
 export DATABASE_URL="postgresql://localhost/inspectors_dev"
 ```
 
-* Back on the command line:
-
-```
-python app.py createdb
-```
-
 * Reboot your virtual environment. (I use `workon mdc-feedback`, but your mileage will vary)
 
 * Upgrade your database in the virtual environment
