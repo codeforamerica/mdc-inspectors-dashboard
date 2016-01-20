@@ -45,7 +45,6 @@ pip install -r requirements.txt
 
 ```
 createdb inspectors_dev
-python app.py createdb
 ```
 
 * On Mac OSX, using Postgres.app, and working within psql:
@@ -68,6 +67,12 @@ vi $VIRTUAL_ENV/bin/postactivate
 export ADMIN_EMAIL='youremail@someplace.net'
 export CONFIG="feedback.settings.DevelopmentConfig"
 export DATABASE_URL="postgresql://localhost/inspectors_dev"
+```
+
+* Back on the command line:
+
+```
+python app.py createdb
 ```
 
 * Reboot your virtual environment. (I use `workon mdc-feedback`, but your mileage will vary)
