@@ -1,6 +1,7 @@
 # mdc-feedback
 [MDC Fellowship 2015] Feedback Engine. Details TBA
 
+An example of how you edit in place.
 
 ### Development setup
 
