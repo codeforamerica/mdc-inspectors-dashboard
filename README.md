@@ -1,8 +1,6 @@
 # mdc-feedback
 [MDC Fellowship 2015] Feedback Engine. Details TBA
 
-An example of how you edit in place.
-
 ### Development setup
 
 This application is built on Flask and Python. The app.py file describes the models and routes.
