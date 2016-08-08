@@ -37,7 +37,7 @@ def call_web(ts):
     as an argument, then pulls Return the
     result in json.
     '''
-    API = 'https://api.typeform.com/v0/form/' + current_app.config.get('TF_ID') + '?key=' + current_app.config.get('TF_KEY') + '&completed=true&since=' + str(ts.timestamp)
+    API = 'https://api.typeform.com/v1/form/' + current_app.config.get('TF_ID') + '?key=' + current_app.config.get('TF_KEY') + '&completed=true&since=' + str(ts.timestamp)
     print API
     response = requests.get(API)
 
@@ -66,7 +66,7 @@ def etl_web_data(ts):
         else:
             obj['lang'] = 'es'
 
-        obj['source_id'] = 'WEB-' + resp['id']
+        obj['source_id'] = 'WEB-' + resp['token']
 
         temp = resp['metadata']['date_submit']
         obj['date_submitted'] = date_to_db(temp)
